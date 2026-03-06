@@ -11,21 +11,21 @@ describe 'unattended_upgrades' do
       it { is_expected.to compile.with_all_deps }
 
       it do
-        is_expected.to create_file('/etc/apt/apt.conf.d/10periodic').
-          with_owner('root').
-          with_group('root').
-          with_content(%r{APT::Periodic::Enable "1";}).
-          with_content(%r{APT::Periodic::BackupArchiveInterval "0";}).
-          with_content(%r{APT::Periodic::BackupLevel "3";}).
-          with_content(%r{APT::Periodic::MaxAge "0";}).
-          with_content(%r{APT::Periodic::MinAge "2";}).
-          with_content(%r{APT::Periodic::MaxSize "0";}).
-          with_content(%r{APT::Periodic::Update-Package-Lists "1";}).
-          with_content(%r{APT::Periodic::Download-Upgradeable-Packages "0";}).
-          with_content(%r{APT::Periodic::Download-Upgradeable-Packages-Debdelta "1";}).
-          with_content(%r{APT::Periodic::Unattended-Upgrade "1";}).
-          with_content(%r{APT::Periodic::AutocleanInterval "0";}).
-          with_content(%r{APT::Periodic::Verbose "0";})
+        is_expected.to create_file('/etc/apt/apt.conf.d/10periodic')
+          .with_owner('root')
+          .with_group('root')
+          .with_content(%r{APT::Periodic::Enable "1";})
+          .with_content(%r{APT::Periodic::BackupArchiveInterval "0";})
+          .with_content(%r{APT::Periodic::BackupLevel "3";})
+          .with_content(%r{APT::Periodic::MaxAge "0";})
+          .with_content(%r{APT::Periodic::MinAge "2";})
+          .with_content(%r{APT::Periodic::MaxSize "0";})
+          .with_content(%r{APT::Periodic::Update-Package-Lists "1";})
+          .with_content(%r{APT::Periodic::Download-Upgradeable-Packages "0";})
+          .with_content(%r{APT::Periodic::Download-Upgradeable-Packages-Debdelta "1";})
+          .with_content(%r{APT::Periodic::Unattended-Upgrade "1";})
+          .with_content(%r{APT::Periodic::AutocleanInterval "0";})
+          .with_content(%r{APT::Periodic::Verbose "0";})
       end
 
       it { is_expected.to contain_apt__conf('auto-upgrades').with_ensure('absent') }
@@ -40,7 +40,7 @@ describe 'unattended_upgrades' do
             /Unattended-Upgrade::Origins-Pattern\ {\n
             \t"origin=Debian,codename=\${distro_codename},label=Debian";\n
             \t"origin=Debian,codename=\${distro_codename}-security,label=Debian-Security";\n
-            };/x
+            };/x,
           )
         end
       when 'Ubuntu'
@@ -51,7 +51,7 @@ describe 'unattended_upgrades' do
             \t"origin=\${distro_id},suite=\${distro_codename}-security";\n
             \t"origin=\${distro_id}ESMApps,suite=\${distro_codename}-apps-security";\n
             \t"origin=\${distro_id}ESM,suite=\${distro_codename}-infra-security";\n
-            };/x
+            };/x,
           )
         end
       end

@@ -22,14 +22,14 @@ describe 'unattended_upgrades' do
       it do
         is_expected.to contain_apt__conf('unattended-upgrades').with(
           require: 'Package[unattended-upgrades]',
-          notify_update: false
+          notify_update: false,
         )
       end
 
       it do
         is_expected.to contain_apt__conf('periodic').with(
           require: 'Package[unattended-upgrades]',
-          notify_update: false
+          notify_update: false,
         )
       end
 
@@ -44,7 +44,7 @@ describe 'unattended_upgrades' do
           update: 5,
           upgradeable_packages: {
             'download_only' => 5,
-            'debdelta'      => 5
+            'debdelta'      => 5,
           },
           upgrade: 5,
           days: %w[tuesday Thursday 5],
@@ -54,7 +54,7 @@ describe 'unattended_upgrades' do
             'remove'               => false,
             'reboot'               => true,
             'reboot_withusers'     => false,
-            'reboot_time'          => '03:00'
+            'reboot_time'          => '03:00',
           },
           verbose: 1,
           origins: %w[codename=bananas],
@@ -65,7 +65,7 @@ describe 'unattended_upgrades' do
           mail: {
             'to'            => 'root@localhost',
             'only_on_error' => true,
-            'report'        => 'on-change'
+            'report'        => 'on-change',
           },
           sender: 'root@server.example.com',
           dl_limit: 70,
@@ -87,110 +87,110 @@ describe 'unattended_upgrades' do
       it do
         is_expected.to contain_apt__conf('unattended-upgrades').with(
           require: 'Package[unattended-upgrades]',
-          notify_update: true
+          notify_update: true,
         )
       end
 
       it do
         is_expected.to contain_apt__conf('periodic').with(
           require: 'Package[unattended-upgrades]',
-          notify_update: true
+          notify_update: true,
         )
       end
 
       it do
         is_expected.to create_file(file_unattended).with(
           owner: 'root',
-          group: 'root'
+          group: 'root',
         ).with_content(
-          %r{Unattended-Upgrade::Origins-Pattern {\n\t"codename=bananas";\n};}
+          %r{Unattended-Upgrade::Origins-Pattern {\n\t"codename=bananas";\n};},
         ).with_content(
-          %r{Unattended-Upgrade::Package-Blacklist {\n\t"foo";\n\t"bar";\n};}
+          %r{Unattended-Upgrade::Package-Blacklist {\n\t"foo";\n\t"bar";\n};},
         ).with_content(
-          %r{Unattended-Upgrade::Package-Whitelist {\n\t"foo";\n\t"bar";\n};\n}
+          %r{Unattended-Upgrade::Package-Whitelist {\n\t"foo";\n\t"bar";\n};\n},
         ).with_content(
-          %r{Unattended-Upgrade::Package-Whitelist-Strict "true";}
+          %r{Unattended-Upgrade::Package-Whitelist-Strict "true";},
         ).with_content(
-          %r{Unattended-Upgrade::Update-Days {\n\t"Tuesday";\n\t"Thursday";\n\t"5";\n};}
+          %r{Unattended-Upgrade::Update-Days {\n\t"Tuesday";\n\t"Thursday";\n\t"5";\n};},
         ).with_content(
-          %r{Unattended-Upgrade::AutoFixInterruptedDpkg "false";}
+          %r{Unattended-Upgrade::AutoFixInterruptedDpkg "false";},
         ).with_content(
-          %r{Unattended-Upgrade::MinimalSteps "false";}
+          %r{Unattended-Upgrade::MinimalSteps "false";},
         ).with_content(
-          %r{Unattended-Upgrade::InstallOnShutdown "true";}
+          %r{Unattended-Upgrade::InstallOnShutdown "true";},
         ).with_content(
-          %r{Unattended-Upgrade::Remove-Unused-Dependencies "false";}
+          %r{Unattended-Upgrade::Remove-Unused-Dependencies "false";},
         ).with_content(
-          %r{Unattended-Upgrade::Automatic-Reboot "true";}
+          %r{Unattended-Upgrade::Automatic-Reboot "true";},
         ).with_content(
-          %r{Unattended-Upgrade::Automatic-Reboot-WithUsers "false";}
+          %r{Unattended-Upgrade::Automatic-Reboot-WithUsers "false";},
         ).with_content(
-          %r{Unattended-Upgrade::Automatic-Reboot-Time "03:00";}
+          %r{Unattended-Upgrade::Automatic-Reboot-Time "03:00";},
         ).with_content(
-          %r{Unattended-Upgrade::Mail "root@localhost";}
+          %r{Unattended-Upgrade::Mail "root@localhost";},
         ).with_content(
-          %r{Unattended-Upgrade::Sender "root@server.example.com";}
+          %r{Unattended-Upgrade::Sender "root@server.example.com";},
         ).with_content(
-          %r{Unattended-Upgrade::MailOnlyOnError "true";}
+          %r{Unattended-Upgrade::MailOnlyOnError "true";},
         ).with_content(
-          %r{Unattended-Upgrade::MailReport "on-change";}
+          %r{Unattended-Upgrade::MailReport "on-change";},
         ).with_content(
-          %r{Acquire::http::Dl-Limit "70";}
+          %r{Acquire::http::Dl-Limit "70";},
         ).with_content(
-          %r{Unattended-Upgrade::Remove-New-Unused-Dependencies "false";}
+          %r{Unattended-Upgrade::Remove-New-Unused-Dependencies "false";},
         ).without_content(
-          %r{Unattended-Upgrade::Remove-Unused-Kernel-Packages}
+          %r{Unattended-Upgrade::Remove-Unused-Kernel-Packages},
         ).with_content(
-          %r{Unattended-Upgrade::SyslogEnable "true";}
+          %r{Unattended-Upgrade::SyslogEnable "true";},
         ).with_content(
-          %r{Unattended-Upgrade::SyslogFacility "daemon";}
+          %r{Unattended-Upgrade::SyslogFacility "daemon";},
         ).with_content(
-          %r{Unattended-Upgrade::OnlyOnACPower "false";}
+          %r{Unattended-Upgrade::OnlyOnACPower "false";},
         ).with_content(
-          %r{Unattended-Upgrade::Skip-Updates-On-Metered-Connections "false";}
+          %r{Unattended-Upgrade::Skip-Updates-On-Metered-Connections "false";},
         ).with_content(
-          %r{Unattended-Upgrade::Allow-downgrade "false";}
+          %r{Unattended-Upgrade::Allow-downgrade "false";},
         ).with_content(
-          %r{DPkg::Options\s+\{\n\s+"--force-confold";\n\s+"--force-confdef";\n\};}
+          %r{DPkg::Options\s+\{\n\s+"--force-confold";\n\s+"--force-confdef";\n\};},
         )
       end
 
       it do
         is_expected.to create_file(file_periodic).with(
           owner: 'root',
-          group: 'root'
+          group: 'root',
         ).with_content(
-          %r{APT::Periodic::Enable "1";}
+          %r{APT::Periodic::Enable "1";},
         ).with_content(
-          %r{APT::Periodic::BackupArchiveInterval "0";}
+          %r{APT::Periodic::BackupArchiveInterval "0";},
         ).with_content(
-          %r{APT::Periodic::BackupLevel "3";}
+          %r{APT::Periodic::BackupLevel "3";},
         ).with_content(
-          %r{APT::Periodic::MaxAge "20";}
+          %r{APT::Periodic::MaxAge "20";},
         ).with_content(
-          %r{APT::Periodic::MinAge "1";}
+          %r{APT::Periodic::MinAge "1";},
         ).with_content(
-          %r{APT::Periodic::MaxSize "1000";}
+          %r{APT::Periodic::MaxSize "1000";},
         ).with_content(
-          %r{APT::Periodic::Update-Package-Lists "5";}
+          %r{APT::Periodic::Update-Package-Lists "5";},
         ).with_content(
-          %r{APT::Periodic::Download-Upgradeable-Packages "5";}
+          %r{APT::Periodic::Download-Upgradeable-Packages "5";},
         ).with_content(
-          %r{APT::Periodic::Download-Upgradeable-Packages-Debdelta "5";}
+          %r{APT::Periodic::Download-Upgradeable-Packages-Debdelta "5";},
         ).with_content(
-          %r{APT::Periodic::Unattended-Upgrade "5";}
+          %r{APT::Periodic::Unattended-Upgrade "5";},
         ).with_content(
-          %r{APT::Periodic::AutocleanInterval "5";}
+          %r{APT::Periodic::AutocleanInterval "5";},
         ).with_content(
-          %r{APT::Periodic::Verbose "1";}
+          %r{APT::Periodic::Verbose "1";},
         ).with_content(
-          %r{APT::Periodic::RandomSleep "300";}
+          %r{APT::Periodic::RandomSleep "300";},
         )
       end
 
       it do
         is_expected.to contain_apt__conf('auto-upgrades').with(
-          ensure: 'absent'
+          ensure: 'absent',
         )
       end
     end
@@ -199,14 +199,14 @@ describe 'unattended_upgrades' do
       let(:params) do
         {
           service_ensure: 'running',
-          service_enable: true
+          service_enable: true,
         }
       end
 
       it do
         is_expected.to contain_service('unattended-upgrades').with(
           ensure: 'running',
-          enable: true
+          enable: true,
         )
       end
     end
@@ -215,14 +215,14 @@ describe 'unattended_upgrades' do
       let(:params) do
         {
           service_ensure: 'stopped',
-          service_enable: false
+          service_enable: false,
         }
       end
 
       it do
         is_expected.to contain_service('unattended-upgrades').with(
           ensure: 'stopped',
-          enable: false
+          enable: false,
         )
       end
     end
@@ -231,7 +231,7 @@ describe 'unattended_upgrades' do
       context 'bad install_on_shutdown' do
         let :params do
           {
-            install_on_shutdown: 'foo'
+            install_on_shutdown: 'foo',
           }
         end
 
@@ -241,7 +241,7 @@ describe 'unattended_upgrades' do
       context 'bad days' do
         let :params do
           {
-            days: 'foo'
+            days: 'foo',
           }
         end
 
@@ -251,7 +251,7 @@ describe 'unattended_upgrades' do
       context 'bad minimal_steps' do
         let :params do
           {
-            minimal_steps: 'foo'
+            minimal_steps: 'foo',
           }
         end
 
@@ -261,7 +261,7 @@ describe 'unattended_upgrades' do
       context 'bad blacklist' do
         let :params do
           {
-            blacklist: 'foo'
+            blacklist: 'foo',
           }
         end
 
@@ -271,7 +271,7 @@ describe 'unattended_upgrades' do
       context 'bad origins' do
         let :params do
           {
-            origins: 'foo'
+            origins: 'foo',
           }
         end
 
@@ -281,7 +281,7 @@ describe 'unattended_upgrades' do
       context 'bad auto' do
         let :params do
           {
-            auto: 'foo'
+            auto: 'foo',
           }
         end
 
@@ -291,7 +291,7 @@ describe 'unattended_upgrades' do
       context 'bad mail' do
         let :params do
           {
-            mail: 'foo'
+            mail: 'foo',
           }
         end
 
@@ -301,7 +301,7 @@ describe 'unattended_upgrades' do
       context 'bad backup' do
         let :params do
           {
-            backup: 'foo'
+            backup: 'foo',
           }
         end
 
@@ -311,7 +311,7 @@ describe 'unattended_upgrades' do
       context 'bad age' do
         let :params do
           {
-            age: 'foo'
+            age: 'foo',
           }
         end
 
@@ -321,7 +321,7 @@ describe 'unattended_upgrades' do
       context 'bad size' do
         let :params do
           {
-            size: 'foo'
+            size: 'foo',
           }
         end
 
@@ -331,7 +331,7 @@ describe 'unattended_upgrades' do
       context 'bad upgradeable_packages' do
         let :params do
           {
-            upgradeable_packages: 'foo'
+            upgradeable_packages: 'foo',
           }
         end
 
@@ -341,7 +341,7 @@ describe 'unattended_upgrades' do
       context 'bad mail[\'only_on_error\']' do
         let :params do
           {
-            mail: { 'only_on_error' => 'foo' }
+            mail: { 'only_on_error' => 'foo' },
           }
         end
 
@@ -353,13 +353,13 @@ describe 'unattended_upgrades' do
       context 'update supports always' do
         let :params do
           {
-            update: 'always'
+            update: 'always',
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::Update-Package-Lists "always";}
+            %r{APT::Periodic::Update-Package-Lists "always";},
           )
         end
       end
@@ -367,13 +367,13 @@ describe 'unattended_upgrades' do
       context 'ugrade supports always' do
         let :params do
           {
-            upgrade: 'always'
+            upgrade: 'always',
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::Unattended-Upgrade "always";}
+            %r{APT::Periodic::Unattended-Upgrade "always";},
           )
         end
       end
@@ -381,13 +381,13 @@ describe 'unattended_upgrades' do
       context 'count supports always' do
         let :params do
           {
-            auto: { 'clean' => 'always' }
+            auto: { 'clean' => 'always' },
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::AutocleanInterval "always";}
+            %r{APT::Periodic::AutocleanInterval "always";},
           )
         end
       end
@@ -395,13 +395,13 @@ describe 'unattended_upgrades' do
       context 'download-only supports always' do
         let :params do
           {
-            upgradeable_packages: { 'download_only' => 'always' }
+            upgradeable_packages: { 'download_only' => 'always' },
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::Download-Upgradeable-Packages "always";}
+            %r{APT::Periodic::Download-Upgradeable-Packages "always";},
           )
         end
       end
@@ -411,13 +411,13 @@ describe 'unattended_upgrades' do
       context 'update supports intervals with suffixes' do
         let :params do
           {
-            update: '3h'
+            update: '3h',
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::Update-Package-Lists "3h";}
+            %r{APT::Periodic::Update-Package-Lists "3h";},
           )
         end
       end
@@ -425,13 +425,13 @@ describe 'unattended_upgrades' do
       context 'upgrade supports intervals with suffixes' do
         let :params do
           {
-            upgrade: '45m'
+            upgrade: '45m',
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::Unattended-Upgrade "45m";}
+            %r{APT::Periodic::Unattended-Upgrade "45m";},
           )
         end
       end
@@ -439,13 +439,13 @@ describe 'unattended_upgrades' do
       context 'update supports seconds interval' do
         let :params do
           {
-            update: '30s'
+            update: '30s',
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::Update-Package-Lists "30s";}
+            %r{APT::Periodic::Update-Package-Lists "30s";},
           )
         end
       end
@@ -453,13 +453,13 @@ describe 'unattended_upgrades' do
       context 'update supports minutes interval' do
         let :params do
           {
-            update: '15m'
+            update: '15m',
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::Update-Package-Lists "15m";}
+            %r{APT::Periodic::Update-Package-Lists "15m";},
           )
         end
       end
@@ -467,13 +467,13 @@ describe 'unattended_upgrades' do
       context 'update supports hours interval' do
         let :params do
           {
-            update: '2h'
+            update: '2h',
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::Update-Package-Lists "2h";}
+            %r{APT::Periodic::Update-Package-Lists "2h";},
           )
         end
       end
@@ -481,13 +481,13 @@ describe 'unattended_upgrades' do
       context 'upgrade supports seconds interval' do
         let :params do
           {
-            upgrade: '45s'
+            upgrade: '45s',
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::Unattended-Upgrade "45s";}
+            %r{APT::Periodic::Unattended-Upgrade "45s";},
           )
         end
       end
@@ -495,13 +495,13 @@ describe 'unattended_upgrades' do
       context 'upgrade supports minutes interval' do
         let :params do
           {
-            upgrade: '10m'
+            upgrade: '10m',
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::Unattended-Upgrade "10m";}
+            %r{APT::Periodic::Unattended-Upgrade "10m";},
           )
         end
       end
@@ -509,13 +509,13 @@ describe 'unattended_upgrades' do
       context 'upgrade supports hours interval' do
         let :params do
           {
-            upgrade: '5h'
+            upgrade: '5h',
           }
         end
 
         it do
           is_expected.to create_file(file_periodic).with_content(
-            %r{APT::Periodic::Unattended-Upgrade "5h";}
+            %r{APT::Periodic::Unattended-Upgrade "5h";},
           )
         end
       end
